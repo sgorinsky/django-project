@@ -1,0 +1,173 @@
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 29 2018, 19:04:46) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 6.4.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from blog.models import Post
+
+In [2]: from django.contrib.auth.models import User
+
+In [3]: User.objects.all()
+Out[3]: <QuerySet [<User: sgorins>, <User: testuser>]>
+
+In [4]: User.objects.all()[0]
+Out[4]: <User: sgorins>
+
+In [5]: User.objects.first()
+Out[5]: <User: sgorins>
+
+In [6]: User.objects.last
+Out[6]: <bound method BaseManager._get_queryset_methods.<locals>.create_method.<locals>.manager_method of <django.contrib.auth.models.UserManager object at 0x106208c50>>
+
+In [7]: User.objects.last()
+Out[7]: <User: testuser>
+
+In [8]: User.objects.filter(username='sgorins')
+Out[8]: <QuerySet [<User: sgorins>]>
+
+In [9]: User.objects.filter(username='sgorins').first()
+Out[9]: <User: sgorins>
+
+In [10]: user = User.objects.filter(username='sgorins').first()
+
+In [11]: user
+Out[11]: <User: sgorins>
+
+In [12]: clear
+
+
+In [13]: user
+Out[13]: <User: sgorins>
+
+In [14]: user.id
+Out[14]: 1
+
+In [15]: user.pk
+Out[15]: 1
+
+In [16]: user.fk
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-16-f6c33f8c5402> in <module>()
+----> 1 user.fk
+
+AttributeError: 'User' object has no attribute 'fk'
+
+In [17]: user = User.objects.get(id=1)
+
+In [18]: user
+Out[18]: <User: sgorins>
+
+In [19]: Post.objects.all()
+Out[19]: <QuerySet []>
+
+In [20]: post_1 = Post(title='first blog', content='First post content', author = user)
+
+In [21]: Post.objects.all()
+Out[21]: <QuerySet []>
+
+In [22]: post_1.save()
+
+In [23]: Post.objects.all()
+Out[23]: <QuerySet [<Post: Post object (1)>]>
+
+In [24]: exit()
+Sams-MacBook-Pro:django_project samgorinsky$ python manage.py shell
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 29 2018, 19:04:46) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 6.4.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from blog.models import post
+---------------------------------------------------------------------------
+ImportError                               Traceback (most recent call last)
+<ipython-input-1-c90e678ba7ad> in <module>()
+----> 1 from blog.models import post
+
+ImportError: cannot import name 'post'
+
+In [2]: from blog.models import Post
+
+In [3]: from django.contrib.auth.model import User
+---------------------------------------------------------------------------
+ModuleNotFoundError                       Traceback (most recent call last)
+<ipython-input-3-27c6d923dfc5> in <module>()
+----> 1 from django.contrib.auth.model import User
+
+ModuleNotFoundError: No module named 'django.contrib.auth.model'
+
+In [4]: from django.contrib.auth.models import User
+
+In [5]: Post.objects.all()
+Out[5]: <QuerySet [<Post: first blog>]>
+
+In [6]: user = User.objects.filter(username='sgorins').first()
+
+In [7]: post_2 = Post(title='Blog2', content = 'Second post content!', author_id=user_id)
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-7-33ba1ee9214e> in <module>()
+----> 1 post_2 = Post(title='Blog2', content = 'Second post content!', author_id=user_id)
+
+NameError: name 'user_id' is not defined
+
+In [8]: post_2 = Post(title='Blog2', content = 'Second post content!', author_id=user.id)
+
+In [9]: post_2.save()
+
+In [10]: Post.objects.all()
+Out[10]: <QuerySet [<Post: first blog>, <Post: Blog2>]>
+
+In [11]: post = Post.objects.first()
+
+In [12]: post.content
+Out[12]: 'First post content'
+
+In [13]: oist.date_posted
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-13-46185c6abb29> in <module>()
+----> 1 oist.date_posted
+
+NameError: name 'oist' is not defined
+
+In [14]: post.date_posted
+Out[14]: datetime.datetime(2019, 8, 18, 12, 51, 7, 334180, tzinfo=<UTC>)
+
+In [15]: post.author
+Out[15]: <User: sgorins>
+
+In [16]: pos2 = Post.objects.last()
+
+In [17]: pos2.date_posted
+Out[17]: datetime.datetime(2019, 8, 18, 12, 54, 22, 472815, tzinfo=<UTC>)
+
+In [18]: pos2.author.email
+Out[18]: 'sgorinsky@gmail.com'
+
+In [19]: pos2.author
+Out[19]: <User: sgorins>
+
+In [20]: user
+Out[20]: <User: sgorins>
+
+In [21]: user.post_set
+Out[21]: <django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager at 0x112622940>
+
+In [22]: user.post_set()
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-22-f6e015c15337> in <module>()
+----> 1 user.post_set()
+
+TypeError: __call__() missing 1 required keyword-only argument: 'manager'
+
+In [23]: user.post_set.all()
+Out[23]: <QuerySet [<Post: first blog>, <Post: Blog2>]>
+
+In [24]: user.post_set.create(title='Blog3',content='third post!')
+Out[24]: <Post: Blog3>
+
+In [25]: Post.objects.all()
+Out[25]: <QuerySet [<Post: first blog>, <Post: Blog2>, <Post: Blog3>]>
+
+In [26]: exit()
+Sams-MacBook-Pro:django_project samgorinsky$ 

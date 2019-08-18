@@ -1,0 +1,23 @@
+<!-- so basically, we have our base template that we can reference, then override it when we need to -->
+
+{% extends "blog/base.html" %}
+{% block content %}
+<!-- way to reference logic from django files here -->
+  {% for post in posts %}
+    <!-- wrap in double braces to access parts of variable post -->
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="#">{{ post.author }}</a>
+          <!-- filtering out the part of the date we want, leaving out time -->
+          <!-- https://docs.djangoproject.com/en/2.2/ref/templates/builtins/#date -->
+          <small class="text-muted">{{ post.date_posted|date:"l, F dS Y" }}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+        <p class="article-content">{{ post.content }}</p>
+      </div>
+    </article>
+    <!-- and of course we have to end our for loop -->
+  {% endfor %}
+  <!-- we don't necessarily need to put block "content" but it's easier to keep track of individual blocks -->
+{% endblock content %}
