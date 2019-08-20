@@ -6,7 +6,7 @@
       <img class="rounded-circle article-img" src={{ object.author.profile.image.url }}> </img>
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="#">{{ object.author }}</a>
+          <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
           <!-- filtering out the part of the date we want, leaving out time -->
           <!-- https://docs.djangoproject.com/en/2.2/ref/templates/builtins/#date -->
           <small class="text-muted">{{ object.date_posted|date:"l, F dS Y" }}</small>

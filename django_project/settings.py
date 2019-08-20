@@ -128,3 +128,12 @@ MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL='blog-home' # we don't want to be redirected to accounts/profile
 LOGIN_URL='login' # redirects someone to login if they visited a webpage that is @login_required, then allows them to visit the webpage once they login
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('GMAIL_USERNAME')
+EMAIL_HOST_PASSWORD =  os.environ.get('GMAIL_APP_PASS')
+
