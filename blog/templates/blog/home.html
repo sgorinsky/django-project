@@ -6,6 +6,7 @@
   {% for post in posts %}
     <!-- wrap in double braces to access parts of variable post -->
     <article class="media content-section">
+      <img class="rounded-circle article-img" src={{ post.author.profile.image.url }}> </img>
       <div class="media-body">
         <div class="article-metadata">
           <a class="mr-2" href="#">{{ post.author }}</a>
@@ -13,11 +14,30 @@
           <!-- https://docs.djangoproject.com/en/2.2/ref/templates/builtins/#date -->
           <small class="text-muted">{{ post.date_posted|date:"l, F dS Y" }}</small>
         </div>
-        <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+        <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
         <p class="article-content">{{ post.content }}</p>
+
+        {% if post.author == user %}
+          <div style="float:left;">
+            <a class="btn btn-sm btn-outline-info" href={% url 'post-update' post.id %}> Update </a>
+            <a class="btn btn-sm btn-outline-danger" href={% url 'post-delete' post.id %}> Delete </a>
+          </div>
+        {% endif %}
       </div>
     </article>
     <!-- and of course we have to end our for loop -->
   {% endfor %}
+  {% if is_paginated %}
+    {% if page_obj.has_previous %}
+      <a style="float:left; margin: 0px 3px 0px 3px;" class="btn btn-outline-primary btn-sm mb-4" href="?page=1"> First </a>
+      <a style="float:left; margin: 0px 3px 0px 3px" class="btn btn-outline-dark btn-sm mb-4" href="?page={{ page_obj.previous_page_number }}"> Previous </a>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+      <!-- since we're floating right, we want buttons to be in the reverse order -->
+      <a style="float:right; margin: 0px 3px 0px 3px" class="btn btn-outline-primary btn-sm mb-4" href="?page={{ page_obj.paginator.num_pages }}"> Last </a>
+      <a style="float:right; margin: 0px 3px 0px 3px;" class="btn btn-outline-dark btn-sm" href="?page={{ page_obj.next_page_number }}"> Next </a>
+      {% endif %}
+  {% endif %}
   <!-- we don't necessarily need to put block "content" but it's easier to keep track of individual blocks -->
 {% endblock content %}

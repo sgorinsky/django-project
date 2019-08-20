@@ -14,21 +14,22 @@
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
 	<link rel="stylesheet" type="text/css" href= {% static "blog/main.css" %}
+
+	
 
 
 </head>
-<body>
+<body style="background-color:#F0F8FF;">
 
 	<header class="site-header">
-	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+	  <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #A265AB;">
 	    <div class="container">
 				<!-- curly braces citing url \{\% url "<url path>" \%\} take us to the absolute path that always leads us to that specific url, in this case blog-home
 							you can check our urlpatterns in urls.py to see exatly the url that we're pointing to
 							it's nice to have these in here in case the url changes so we're not hardcoding into the html each time the new
 							absolute paths for our site -->
-	      <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
+	      <a class="navbar-brand mr-4" href="{% url 'blog-home' %}"> knit </a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 	      <span class="navbar-toggler-icon"></span>
 	      </button>
@@ -36,11 +37,18 @@
 	        <div class="navbar-nav mr-auto">
 	          <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
 	          <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+
 	        </div>
 	        <!-- Navbar Right Side -->
 	        <div class="navbar-nav">
-	          <a class="nav-item nav-link" href="#">Login</a>
-	          <a class="nav-item nav-link" href="#">Register</a>
+						{% if user.is_authenticated %}
+						<a class="nav-item nav-link" href="{% url 'post-create' %}"> New Post </a>
+						<a class="nav-item nav-link" href="{% url 'profile' %}"> {{ user.username }}</a>
+						<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+						{% else %}
+		          <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+		          <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+						{% endif %}
 	        </div>
 	      </div>
 	    </div>
@@ -49,9 +57,20 @@
 	<main role="main" class="container">
 	  <div class="row">
 	    <div class="col-md-8">
-	      {% block content %}{% endblock %}
+				{% if messages %}
+					{% for msg in messages %}
+						<!-- we pass in the alert that django gives so it can be green or red or whatever -->
+						<div class="alert alert-{{ msg.tags }}">
+							{{ msg }}
+						</div>
+					{% endfor %}
+				{% endif %}
+				<div class="p-3 mb-2;">
+		      {% block content %}
+					{% endblock %}
+				</div>
 	    </div>
-	    <div class="col-md-4">
+	    <div class="col-md-4;">
 	      <div class="content-section">
 	        <h3>Our Sidebar</h3>
 	        <p class='text-muted'>You can put any information here you'd like.
